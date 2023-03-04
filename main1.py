@@ -40,6 +40,10 @@ def add_order(product_name, quantity, date):
         return
     c.execute("INSERT INTO Orders VALUES (?, ?, ?)", (product_name, quantity, date))
     conn.commit()
+    # Reduce the quantity of the product in the Product table
+    new_quantity = available_quantity - quantity
+    c.execute("UPDATE Product SET quantity = ? WHERE name = ?", (new_quantity, product_name))
+    conn.commit()
     st.success("Order added successfully")
 
 def update_order_quantity(product_name, quantity):
