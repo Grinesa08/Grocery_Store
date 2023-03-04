@@ -51,8 +51,19 @@ def update_order_quantity(product_name, quantity):
     conn.commit()
 
 def delete_order(product_name):
+    # get the quantity of the product that has been removed from the Orders table
+    c.execute("SELECT quantity FROM Orders WHERE product_name = ?", (product_name,))
+    result = c.fetchone()
+    if result is None:
+        st.error(f"No orders found for {product_name}.")
+        return
+    removed_quantity = result[0]
+    # increment the quantity of the product in the Product table
+    c.execute("UPDATE Product SET quantity = quantity + ? WHERE name = ?", (removed_quantity, product_name))
+    conn.commit()
     c.execute("DELETE FROM Orders WHERE product_name = ?", (product_name,))
     conn.commit()
+    st.success("Order deleted successfully")
 
 # Define Streamlit web interface
 def main():
