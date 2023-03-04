@@ -65,6 +65,7 @@ def delete_order(product_name):
     conn.commit()
     st.success("Order deleted successfully")
 
+
 # Define Streamlit web interface
 def main():
     st.title("Grocery Store Application")
