@@ -50,7 +50,7 @@ def update_order_quantity(product_name, quantity):
     c.execute("UPDATE Orders SET quantity = ? WHERE product_name = ?", (quantity, product_name))
     conn.commit()
 
-def delete_order(product_name):
+def return_order(product_name):
     # get the quantity of the product that has been removed from the Orders table
     c.execute("SELECT quantity FROM Orders WHERE product_name = ?", (product_name,))
     result = c.fetchone()
@@ -63,7 +63,7 @@ def delete_order(product_name):
     conn.commit()
     c.execute("DELETE FROM Orders WHERE product_name = ?", (product_name,))
     conn.commit()
-    st.success("Order deleted successfully")
+    st.success("Order returned successfully")
 
 
 # Define Streamlit web interface
@@ -122,12 +122,12 @@ def main():
             product_name = ""
             quantity = 0
 
-    elif choice == "Delete Order":
-        st.subheader("Delete Order")
+    elif choice == "Return Order":
+        st.subheader("Return Order")
         product_name = st.text_input("Name of product")
-        if st.button("Delete"):
-            delete_order(product_name)
-            st.success("Order deleted successfully")
+        if st.button("Return"):
+            return_order(product_name)
+            st.success("Order returned successfully")
             product_name = ""
 
 if __name__ == '__main__':
